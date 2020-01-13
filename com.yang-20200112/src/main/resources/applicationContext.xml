@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--id, name 必须是唯一的， id里面不可以有特殊字符，在创建时，spring可以通过id或者name找到这bean-->
+    <bean id="personId" name="personName" class="com.yang.Person">
+        <!--这个就是实例时的初始值-->
+        <property name="id" value="1" />
+        <property name="name" value="ning" />
+        <property name="sex" value="female" />
+    </bean>
+</beans>
