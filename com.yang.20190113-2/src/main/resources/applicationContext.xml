@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 数据库连接 使用property注入 -->
+    <bean id="db" class="dao.impl.DataSources">
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/user"/>
+        <property name="username" value="root"/>
+        <property name="password" value="mysql"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    </bean>
+    <!-- 数据库操作 使用constructor-arg构造方法进行注入，因为是对象，所以我们使用ref -->
+    <bean id="dao" class="dao.impl.UserDaoImpl">
+        <constructor-arg index="0" name="ds" ref="db"/>
+    </bean>
+
+    <!-- 服务端操作 我们使用p命名空间进行注入，对象所以要加上ref -->
+    <bean id="service" class="service.impl.UserServiceImpl" p:userDao-ref="dao"/>
+
+    <!-- 控制层操作 -->
+    <bean id="controller" class="controller.UserController" p:userService-ref="service"/>
+
+</beans>
