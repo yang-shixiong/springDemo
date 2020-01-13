@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+        注意：现在基本都是用注解代替这个，学习这个，只是为了更好的了解IOC
+
+        id 跟 name 必须是唯一的，我们到时候可以根据id或者name来查找spring为我们创建的实例，name就是别名的意思，可以创建多个别名
+        class 就是我们的需要实例化的类是哪个
+        scope 就是设置bean对应对象的生成规则，默认是singleton也就是单例模式，prototype也就是使用的时候创建一个新的实例，
+            还有request 表示一次请求范围， session一次会话范围
+        lazy-init 注意默认值是false，只是对单例起作用，如果为true就是延迟创建，也就是需要的时候在进行创建，这个可以开启debug模式进行确认
+        destroy-method 这个是在实例销毁时进行调用，例如数据库连接实例
+        init-method 这个是在实例创建之初进行调用
+        bean默认进行单行处理的，因此记得自己创建的类中必须有无参构建函数
+        bean的注入可以通过
+            property调用setXXX方法，
+            通过constructor-arg方法，调用构造函数方法，
+            p注入，也就是名称空间注入
+        对于constructor-arg一般建议index与name一起用，以防止出现歧义，或者自己记混了，最好也把type加上
+        针对注入方式
+            value只能进行单纯的赋值，也就是基本类型值的注入，
+            ref可以赋予对象，
+            命名空间对象的注入就是p:属性名-ref
+    -->
+    <!-- 调用set方法 -->
+    <bean id="d1" name="dog1,dog2" class="com.yang.Dog" lazy-init="true" destroy-method="destroyDog"
+          init-method="createDog">
+        <property name="id" value="1"/>
+        <property name="name" value="jack"/>
+        <property name="masterName" value="ning"/>
+        <property name="loveFood">
+            <list>
+                <value>shit</value>
+                <value>fruit</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 调用构造函数 -->
+    <bean id="d2" name="dog3" class="com.yang.Dog" scope="prototype" destroy-method="destroyDog"
+          init-method="createDog">
+        <constructor-arg index="0" value="2" name="id" type="int"/>
+        <constructor-arg index="1" value="tom" name="name" type="java.lang.String"/>
+        <constructor-arg index="2" value="hong" name="masterName" type="java.lang.String"/>
+        <constructor-arg index="3" name="loveFood">
+            <list>
+                <value>boon</value>
+                <value>meat</value>
+            </list>
+        </constructor-arg>
+    </bean>
+    <!-- 无参 -->
+    <bean id="d3" name="dog4" class="com.yang.Dog"/>
+    <bean id="d4" name="dog5" class="com.yang.Dog" p:id="3" p:name="jerry" p:masterName="ning"/>
+</beans>
