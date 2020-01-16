@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--加载扫描器，并制定包-->
+    <context:component-scan base-package="controller" />
+
+    <!--因为jsp文件方法WEB-INF外边，通过路径可以直接请求到，因此这一次，我们把jsp文件移动到WEB-INF里面，然后坐一下简单的配置，以方便在视图中进行查找-->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--这个就是增加的前缀-->
+        <property name="prefix" value="/WEB-INF/page/" />
+        <!--这个就是增加的后缀，我们可以不用在controller中加载视图时写.jsp-->
+        <property name="suffix" value=".jsp" />
+    </bean>
+</beans>

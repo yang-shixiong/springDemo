@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--实例化类对象-->
+    <bean id="hello" class="com.yang.controller.Hello" />
+    <bean id="login" class="com.yang.controller.Login" />
+    <bean id="authenticate" class="com.yang.controller.Authenticate" />
+    <bean id="simpleUrlHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <!--将请求路径为/hello的传递给helloController-->
+                <prop key="/login">login</prop>
+                <prop key="/authenticate">authenticate</prop>
+                <prop key="/">hello</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
