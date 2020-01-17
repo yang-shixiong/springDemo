@@ -1,6 +1,5 @@
 package controller;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller  // Controller就是通知Spring框架进行扫描的，我这个试了一下，用Component就无法访问，具体原理后续再研究
-@RequestMapping("/index")  // 在类前面加这个注解，就会给下面所有方法前面都加上这个路由
+//@RequestMapping("/index")  // 在类前面加这个注解，就会给下面所有方法前面都加上这个路由
 public class Authenticate {
     // 这个就是路由
     @RequestMapping("/authenticate")
