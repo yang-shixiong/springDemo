@@ -12,7 +12,7 @@ public class Upload {
     @RequestMapping("/upload")
     public ModelAndView upload(MultipartFile file) {
         ModelAndView mav = new ModelAndView("show");
-        var msg = "上传失败";
+        String msg = "上传失败";
         if (!file.isEmpty()) {
             msg = "上传成功";
         }

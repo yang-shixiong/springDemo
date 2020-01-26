@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--配置注解扫描-->
+    <context:component-scan base-package="com.yang" />
+    <!--因为配置了静态文件，spring不会自动为我们加载HandlerMapping与HandlerAdapter，因此需要进行初始化-->
+    <mvc:annotation-driven />
+
+    <!--配置静态文件-->
+    <mvc:resources location="WEB-INF/static/images" mapping="/images/**" />
+    <mvc:resources location="WEB-INF/static/js" mapping="/js/**" />
+    <mvc:resources location="WEB-INF/static/css" mapping="/css/**" />
+
+    <!--上传文件配置-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="maxUploadSize" value="5120" />
+    </bean>
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+</beans>
