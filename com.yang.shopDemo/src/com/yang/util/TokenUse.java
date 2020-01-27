@@ -65,7 +65,5 @@ public class TokenUse {
         }catch (Exception e){
             return 0;
         }
-//        DecodedJWT decodedJWT = JWT.decode(token);
-//        return decodedJWT.getClaim("userId").asInt();
     }
 }

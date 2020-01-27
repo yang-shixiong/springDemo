@@ -118,7 +118,8 @@
                         alert("服务器异常，请重试！");
                         return false;
                     }
-                    window.assign("${pageContext.request.contextPath}/login")
+                    // 成功之后，页面跳转
+                    window.location = "${pageContext.request.contextPath}/login";
                 },
                 error:function (err) {
                     console.log(err);
