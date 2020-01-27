@@ -33,5 +33,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.30" level="application_server_libraries" />
     <orderEntry type="library" name="com.springsource.com.mchange.v2.c3p0-0.9.1.2" level="project" />
     <orderEntry type="library" name="commons-dbutils-1.4" level="project" />
+    <orderEntry type="library" name="jedis-3.2.0" level="project" />
+    <orderEntry type="library" name="spring-data-redis-2.2.4.RELEASE" level="project" />
+    <orderEntry type="library" name="java-jwt-3.9.0" level="project" />
+    <orderEntry type="library" name="commons-codec-1.11" level="project" />
   </component>
 </module>

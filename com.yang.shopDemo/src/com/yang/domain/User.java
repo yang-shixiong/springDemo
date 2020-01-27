@@ -9,7 +9,7 @@ public class User {
     private String password;
     private String sex;
     private String avatarUrl;
-    private Integer userType;
+    private String userType;
 
     public String getUsername() {
         return username;
@@ -43,11 +43,11 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public Integer getUserType() {
+    public String getUserType() {
         return userType;
     }
 
-    public void setUserType(Integer userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 

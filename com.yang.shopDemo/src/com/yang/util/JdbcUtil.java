@@ -1,16 +1,19 @@
 package com.yang.util;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+@Component
 public class JdbcUtil {
     // 声明一个数据库资源，方便后续进行操作
     public static DataSource ds = null;
@@ -20,10 +23,10 @@ public class JdbcUtil {
         Properties properties = new Properties();
         try {
             // 2. 读取mysql的配置信息到内存中
-            FileInputStream fileInputStream = new FileInputStream("resources/mysql.properties");
+            FileInputStream fileInputStream = new FileInputStream("/Users/yangshixiong/Desktop/springDemo/com.yang.shopDemo/resources/mysql.properties");
             // 3. 转化配置信息
             properties.load(fileInputStream);
-            // 4。 生成德鲁伊数据库连接吃池
+            // 4。 生成德鲁伊数据库连接池
             ds = DruidDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             e.printStackTrace();
