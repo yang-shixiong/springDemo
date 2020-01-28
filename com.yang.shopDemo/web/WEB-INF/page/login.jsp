@@ -82,22 +82,24 @@
             let username = $('#username').val();
             let password = $('#password').val();
             console.log(username, password)
-            if(username === "" || password === ""){
+            if (username === "" || password === "") {
                 alert("用户名或密码不能为空！");
                 return false;
             }
             $.ajax({
-                type:"post",
-                url:"${pageContext.request.contextPath}/login",
-                data:{username,password},
-                success:function (data) {
-                    if(data === "fail"){
+                type: "post",
+                url: "${pageContext.request.contextPath}/login",
+                data: {username, password},
+                success: function (data) {
+                    if (data === "fail") {
                         alert("用户名或密码有误，请修改！");
                         return false;
                     }
                     sessionStorage.setItem("token", data);
+                    window.location = "${pageContext.request.contextPath}/product?token=" + data;
+
                 },
-                error:function (err) {
+                error: function (err) {
                     console.log(err);
                     alert("服务器异常，请稍后再试！")
                 }

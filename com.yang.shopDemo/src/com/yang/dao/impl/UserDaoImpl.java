@@ -14,7 +14,7 @@ public class UserDaoImpl implements IUserDao {
     public boolean save(User user) {
         // 创建sql语句
         String sql = "insert into user(username, password) values(?,?)";
-        // 使用工具类进行查询
+        // 使用工具类
         int result = CRUDTemplate.executeUpdate(sql, user.getUsername(), user.getPassword());
         return result == 1;
     }

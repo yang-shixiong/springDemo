@@ -4,8 +4,8 @@ package com.yang.domain;
  * 用户表，记录用户相关信息
  */
 public class User {
-    private  Integer id;
-    private String  username;
+    private Integer id;
+    private String username;
     private String password;
     private String sex;
     private String avatarUrl;

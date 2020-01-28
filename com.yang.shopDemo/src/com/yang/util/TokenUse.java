@@ -28,13 +28,13 @@ public class TokenUse {
         requestHeader.put("alg", "HS256");
 //        long dt = new Date().getTime();
         // 返回带有用户信息的签名
-        try{
+        try {
             return JWT.create().withHeader(requestHeader)
                     .withClaim("username", username)
                     .withClaim("userId", userId)
                     .withExpiresAt(data)
                     .sign(algorithm);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             return null;
@@ -42,27 +42,27 @@ public class TokenUse {
     }
 
     // 验证token是否正确，返回boolean值
-    public static boolean tokenVerify(String token){
-        try{
+    public static boolean tokenVerify(String token) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(tokenSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
             // 验证
             DecodedJWT decodedJWT = verifier.verify(token);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
     // 获取登陆用户token中的用户ID
-    public static int getUserID(String token){
-        try{
+    public static Integer getUserID(String token) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(tokenSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getClaim("userId").asInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }

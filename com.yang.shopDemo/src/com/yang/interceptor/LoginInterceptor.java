@@ -15,7 +15,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         System.out.println("preHandle当处理器方法执行之前调用");
         response.setCharacterEncoding("utf-8");
         String token = request.getHeader("token");
-        if(token != null){
+        if (token != null) {
             // 判断是否携带token，并进行验证
             return TokenUse.tokenVerify(token);
         }

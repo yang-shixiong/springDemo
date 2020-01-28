@@ -4,6 +4,7 @@ public class Product {
     private Integer id;
     private String name;
     private String description;
+    private String pictureUrl;
     private float price;
 
     public Integer getId() {
@@ -36,5 +37,13 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }

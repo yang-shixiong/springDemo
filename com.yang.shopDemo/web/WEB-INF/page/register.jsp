@@ -94,34 +94,34 @@
             let password = $('#password').val();
             let password2 = $('#password2').val();
             let chkAccept = $('#chkAccept').val();
-            if(username === "" || password === ""){
+            if (username === "" || password === "") {
                 alert("用户名或密码不能为空！");
                 return false;
             }
-            if(password !== password2){
+            if (password !== password2) {
                 alert("两次密码不一致！");
                 return false;
             }
-            if(password.length < 6){
+            if (password.length < 6) {
                 alert("密码最小长度为六位！");
                 return false;
             }
             $.ajax({
-                type:"post",
-                url:"${pageContext.request.contextPath}/register",
-                data:{username,password},
-                success:function (data) {
-                    if(data === "exit"){
+                type: "post",
+                url: "${pageContext.request.contextPath}/register",
+                data: {username, password},
+                success: function (data) {
+                    if (data === "exit") {
                         alert("用户名已存在，请修改！");
                         return false;
-                    }else if(data === "fail"){
+                    } else if (data === "fail") {
                         alert("服务器异常，请重试！");
                         return false;
                     }
                     // 成功之后，页面跳转
                     window.location = "${pageContext.request.contextPath}/login";
                 },
-                error:function (err) {
+                error: function (err) {
                     console.log(err);
                     alert("服务器异常，请稍后再试！")
                 }

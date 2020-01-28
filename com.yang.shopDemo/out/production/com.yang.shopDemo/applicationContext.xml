@@ -11,77 +11,75 @@
        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--配置注解扫描-->
-    <context:component-scan base-package="com.yang" />
+    <context:component-scan base-package="com.yang"/>
     <!--因为配置了静态文件，spring不会自动为我们加载HandlerMapping与HandlerAdapter，因此需要进行初始化-->
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
 
-    <mvc:default-servlet-handler />
+    <!--    <mvc:default-servlet-handler />-->
     <!--配置静态文件-->
-    <mvc:resources location="/static" mapping="/static/**" />
-<!--    <mvc:resources location="/static/js" mapping="/js/**" />-->
-<!--    <mvc:resources location="/static/css" mapping="/css/**" />-->
+    <mvc:resources mapping="/static/**" location="/static/"/>
 
     <!--上传文件配置-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="UTF-8" />
-        <property name="maxUploadSize" value="5120" />
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="maxUploadSize" value="5120"/>
     </bean>
     <!--配置视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/page/" />
-        <property name="suffix" value=".jsp" />
+        <property name="prefix" value="/WEB-INF/page/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
 
-<!--    &lt;!&ndash;配置redis&ndash;&gt;-->
-<!--    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
-<!--        &lt;!&ndash;最大连接数&ndash;&gt;-->
-<!--        <property name="maxTotal" value="${cache.redis.maxActive}" />-->
-<!--        &lt;!&ndash;最大空闲连接数&ndash;&gt;-->
-<!--        <property name="maxIdle" value="${cache.redis.maxIdle}" />-->
-<!--        &lt;!&ndash;获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1&ndash;&gt;-->
-<!--        <property name="maxWaitMillis" value="${cache.redis.maxWait}" />-->
-<!--        &lt;!&ndash;获取连接时检查有效性，默认是false&ndash;&gt;-->
-<!--        <property name="testOnBorrow" value="${cache.redis.testOnBorrow}" />-->
-<!--    </bean>-->
-<!--    &lt;!&ndash;spring-redis连接池管理工厂&ndash;&gt;-->
-<!--    <bean id="redisConnectionFactory"-->
-<!--          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
-<!--&lt;!&ndash;        <property name="usePool" value="true" />&ndash;&gt;-->
-<!--        &lt;!&ndash;Ip地址&ndash;&gt;-->
-<!--        <property name="hostName" value="${cache.redis.host}" />-->
-<!--        &lt;!&ndash;端口号&ndash;&gt;-->
-<!--        <property name="port" value="${cache.redis.port}" />-->
-<!--        &lt;!&ndash;密码&ndash;&gt;-->
-<!--        <property name="password" value="${cache.redis.password}" />-->
-<!--        &lt;!&ndash;超时时间&ndash;&gt;-->
-<!--        <property name="timeout" value="${cache.redis.timeout}" />-->
-<!--        <property name="database" value="${cache.redis.db}" />-->
-<!--        <constructor-arg index="0" ref="poolConfig" />-->
-<!--    </bean>-->
+    <!--    &lt;!&ndash;配置redis&ndash;&gt;-->
+    <!--    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+    <!--        &lt;!&ndash;最大连接数&ndash;&gt;-->
+    <!--        <property name="maxTotal" value="${cache.redis.maxActive}" />-->
+    <!--        &lt;!&ndash;最大空闲连接数&ndash;&gt;-->
+    <!--        <property name="maxIdle" value="${cache.redis.maxIdle}" />-->
+    <!--        &lt;!&ndash;获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1&ndash;&gt;-->
+    <!--        <property name="maxWaitMillis" value="${cache.redis.maxWait}" />-->
+    <!--        &lt;!&ndash;获取连接时检查有效性，默认是false&ndash;&gt;-->
+    <!--        <property name="testOnBorrow" value="${cache.redis.testOnBorrow}" />-->
+    <!--    </bean>-->
+    <!--    &lt;!&ndash;spring-redis连接池管理工厂&ndash;&gt;-->
+    <!--    <bean id="redisConnectionFactory"-->
+    <!--          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
+    <!--&lt;!&ndash;        <property name="usePool" value="true" />&ndash;&gt;-->
+    <!--        &lt;!&ndash;Ip地址&ndash;&gt;-->
+    <!--        <property name="hostName" value="${cache.redis.host}" />-->
+    <!--        &lt;!&ndash;端口号&ndash;&gt;-->
+    <!--        <property name="port" value="${cache.redis.port}" />-->
+    <!--        &lt;!&ndash;密码&ndash;&gt;-->
+    <!--        <property name="password" value="${cache.redis.password}" />-->
+    <!--        &lt;!&ndash;超时时间&ndash;&gt;-->
+    <!--        <property name="timeout" value="${cache.redis.timeout}" />-->
+    <!--        <property name="database" value="${cache.redis.db}" />-->
+    <!--        <constructor-arg index="0" ref="poolConfig" />-->
+    <!--    </bean>-->
 
-<!--    <bean id="redisCache" class="org.springframework.data.redis.core.RedisTemplate">-->
-<!--        <property name="connectionFactory" ref="redisConnectionFactory" />-->
-<!--        <property name="keySerializer" ref="stringRedisSerializer" />-->
-<!--        <property name="valueSerializer" ref="stringRedisSerializer" />-->
-<!--        <property name="hashKeySerializer" ref="stringRedisSerializer" />-->
-<!--        <property name="hashValueSerializer" ref="stringRedisSerializer" />-->
-<!--    </bean>-->
+    <!--    <bean id="redisCache" class="org.springframework.data.redis.core.RedisTemplate">-->
+    <!--        <property name="connectionFactory" ref="redisConnectionFactory" />-->
+    <!--        <property name="keySerializer" ref="stringRedisSerializer" />-->
+    <!--        <property name="valueSerializer" ref="stringRedisSerializer" />-->
+    <!--        <property name="hashKeySerializer" ref="stringRedisSerializer" />-->
+    <!--        <property name="hashValueSerializer" ref="stringRedisSerializer" />-->
+    <!--    </bean>-->
 
-<!--    <bean id="stringRedisSerializer"-->
-<!--          class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
+    <!--    <bean id="stringRedisSerializer"-->
+    <!--          class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
     <!--配置拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
             <!--拦截所有请求-->
-            <mvc:mapping path="/" />
+            <mvc:mapping path="/"/>
             <!--不拦截登陆-->
-            <mvc:exclude-mapping path="/login" />
+            <mvc:exclude-mapping path="/login"/>
             <!--不拦截注册-->
-            <mvc:exclude-mapping path="/register" />
+            <mvc:exclude-mapping path="/register"/>
             <!--不拦截静态文件-->
-            <mvc:exclude-mapping path="/static/**" />
+            <mvc:exclude-mapping path="/static/**"/>
             <!--指定我们的拦截器-->
-            <bean class="com.yang.interceptor.LoginInterceptor" />
+            <bean class="com.yang.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>

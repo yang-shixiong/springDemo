@@ -4,7 +4,6 @@ public class OrderDetail {
     private Integer id;
     private Integer orderId;
     private Integer userId;
-    private Integer productNum;
     private float price;
 
     public Integer getId() {
@@ -29,14 +28,6 @@ public class OrderDetail {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getProductNum() {
-        return productNum;
-    }
-
-    public void setProductNum(Integer productNum) {
-        this.productNum = productNum;
     }
 
     public float getPrice() {
