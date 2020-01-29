@@ -47,7 +47,7 @@
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="${pageContext.request.contextPath}/userinfo/${user.id}">个人信息</a></li>
-                        <li><a href="${pageContext.request.contextPath}/order/${user.id}">查看订单</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list/${user.id}">查看订单</a></li>
                         <li id="logout"><a>退出</a></li>
                     </ul>
                 </li>
@@ -77,9 +77,12 @@
                 <td>${productMap[car.id].price}</td>
                 <td>
                     <button href="${pageContext.request.contextPath}/car/delete/${car.id}" type="button"
-                            class="btn btn-danger delete">删除
+                            class="btn btn-danger delete">
+                        删除
                     </button>
-                    <button href="" type="button" class="btn btn-success">单独结算</button>
+                    <button onclick="buy(${car.id})" type="button" class="btn btn-success">
+                        单独结算
+                    </button>
                 </td>
             </tr>
         </c:forEach>
@@ -89,7 +92,7 @@
     <div style="display: flex; justify-content: flex-end; align-items: center; border-top:1px solid #333333">
         <div style="color: red; font-size: 40px">总计：${totalPrice}</div>
         <div style="margin: 0 200px 0 20px;">
-            <button type="button" class="btn btn-primary">结算</button>
+            <button type="button" class="btn btn-primary" onclick="buy(0)">结算</button>
         </div>
     </div>
 </div>
@@ -99,6 +102,22 @@
 <!-- Bootstrap -->
 <script src="${pageContext.request.contextPath}/static/js/bootstrap.min.js"></script>
 <script type="application/javascript">
+    function buy(carId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/order/add/${user.id}/" + carId,
+            success: function (data) {
+                if(data !== 0){
+                    window.location = "${pageContext.request.contextPath}/order/" + data + "/${user.id}";
+                    return false;
+                }
+                alert("fail");
+            },
+            error: function (err) {
+                console.log(err);
+                alert("服务器异常！");
+            }
+        })
+    };
     $(function () {
         let token = sessionStorage.getItem("token") || null;
         // 验证是否存在token，没有则返回登陆
@@ -130,7 +149,7 @@
         $("#logout").click(function () {
             sessionStorage.removeItem("token");
             window.location = "${pageContext.request.contextPath}/login"
-        })
+        });
     })
 </script>
 </body>

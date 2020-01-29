@@ -8,6 +8,9 @@ public interface ICarDao {
     // 根据用户Id获取购物车内容
     List<Car> getList(Integer userId);
 
+    // 根据购物车Id获取购物车内容
+    Car getCar(Integer id);
+
     // 加入购物车
     boolean addCar(Car car);
 

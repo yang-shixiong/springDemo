@@ -107,7 +107,7 @@
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="${pageContext.request.contextPath}/userinfo/${user.id}">个人信息</a></li>
-                        <li><a href="${pageContext.request.contextPath}/order/${user.id}">查看订单</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list/${user.id}">查看订单</a></li>
                         <li id="logout"><a>退出</a></li>
                     </ul>
                 </li>
@@ -116,7 +116,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div style="max-width: 1440px; margin: 0 auto">
-    <div style="height: 20px; line-height: 20px"> < 返回商品列表</div>
     <div class="product-detail">
         <div class="detail-img">
             <img src="${pageContext.request.contextPath}/${product.pictureUrl}" alt="${product.name}照片">

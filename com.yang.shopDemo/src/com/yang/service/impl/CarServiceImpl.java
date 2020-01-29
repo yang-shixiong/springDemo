@@ -22,6 +22,11 @@ public class CarServiceImpl implements ICarService {
     }
 
     @Override
+    public Car getCar(Integer id) {
+        return iCarDao.getCar(id);
+    }
+
+    @Override
     public boolean addCar(Car car) {
 
         return iCarDao.addCar(car);

@@ -1,82 +1,21 @@
 <%--
   Created by IntelliJ IDEA.
   User: yangshixiong
-  Date: 2020/1/28
-  Time: 下午5:34
+  Date: 2020/1/29
+  Time: 上午10:46
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>${product.name}详情</title>
+    <title>${user.username}的订单</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="yang">
 
     <!-- Bootstrap core CSS -->
     <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .product-detail {
-            display: flex;
-            height: 350px;
-        }
-
-        .detail-img {
-            width: 350px;
-            height: auto;
-            align-items: center;
-            margin-right: 30px;
-        }
-
-        .detail-img img {
-            width: 350px;
-            height: auto;
-        }
-
-        .detail-right {
-
-        }
-
-        .detail-name {
-            font: 700 16px Arial, "microsoft yahei";
-            color: #666;
-            padding-top: 10px;
-            line-height: 40px;
-            margin-bottom: 5px;
-        }
-
-        .detail-price {
-            color: #E4393C;
-            margin-right: 10px;
-            height: 50px;
-        }
-
-        .detail-description {
-            height: 180px;
-        }
-
-        .detail-btn {
-            display: flex;
-            justify-content: space-between;
-            width: 400px;
-        }
-
-        .detail-btn div {
-            height: 46px;
-            line-height: 46px;
-            padding: 0 26px;
-            font-size: 18px;
-            font-weight: 700;
-            background-color: #df3033;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .detail-btn div:hover {
-            text-decoration: none;
-            background-color: orange;
-        }
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -96,6 +35,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/">回欢迎页</a></li>
                 <li><a href="#" id="backProduct">返回商品列表</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="${pageContext.request.contextPath}/car/${user.id}">购物车</a></li>
@@ -115,23 +55,45 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div style="max-width: 1440px; margin: 0 auto">
-    <div class="product-detail">
-        <div class="detail-img">
-            <img src="${pageContext.request.contextPath}/${product.pictureUrl}" alt="${product.name}照片">
-        </div>
-        <div class="detail-right">
-            <div class="detail-name">${product.name}</div>
-            <p class="detail-price">价格：${product.price}</p>
-            <div class="detail-description">${product.description}</div>
-            <div class="detail-btn">
-                <div id="car">加入购物车</div>
-                <div id="buy">立即购买</div>
+<div>
+    <table class="table table-hover">
+        <caption>${user.username}的购物车</caption>
+        <thead>
+        <tr>
+            <th>照片</th>
+            <th>商品</th>
+            <th>描述</th>
+            <th>价格</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${orderDetails}" var="orderDetail">
+            <tr>
+                <td><img src="${pageContext.request.contextPath}/${productMap[orderDetail.id].pictureUrl}" alt=""
+                         class="img-circle" style="max-width: 30px;"></td>
+                <td>${productMap[orderDetail.id].name}</td>
+                <td>${productMap[orderDetail.id].description}</td>
+                <td>${productMap[orderDetail.id].price}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <div style="display: flex; justify-content: flex-end; align-items: center; border-top:1px solid #333333">
+        <div style="color: red; font-size: 40px">总计：${order.price}</div>
+        <c:if test="${order.status == '未付款'}">
+            <div style="margin: 0 200px 0 20px;">
+                <button type="button" class="btn btn-primary" id="pay">去付款</button>
             </div>
-        </div>
+        </c:if>
+        <c:if test="${order.status == '已付款'}">
+            <div style="margin: 0 200px 0 20px;">
+                已付款完成
+            </div>
+        </c:if>
+
+
     </div>
 </div>
-
 
 <!-- Jquery -->
 <script src="${pageContext.request.contextPath}/static/js/jquery-1.11.1.min.js"></script>
@@ -148,34 +110,26 @@
             return false;
         }
         document.getElementById("backProduct").href = "${pageContext.request.contextPath}/product?token=" + token;
-        $("#car").click(function () {
-            $.ajax({
-                type: "post",
-                url: "${pageContext.request.contextPath}/car/add",
-                data: {"userId":${user.id}, "productId":${product.id}, "price":${product.price}},
-                success: function (res) {
-                    if (res === "exist") {
-                        alert("购物车已存在，请先结算！");
-                        return false;
-                    }
-                    if (res === "fail") {
-                        alert("添加购物车失败，请重试！");
-                        return false;
-                    }
-                    alert("添加成功！")
-                },
-                error: function (err) {
-                    console.log(err);
-                    alert("服务器异常，添加失败！")
-                }
-            })
-        });
-        $("#buy").click(function () {
-
-        });
         $("#logout").click(function () {
             sessionStorage.removeItem("token");
             window.location = "${pageContext.request.contextPath}/login"
+        });
+        $("#pay").click(function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/order/update/${order.id}",
+                success: function (data) {
+                    if(data === "ok"){
+                        alert("付款成功！")
+                        window.location.reload();
+                        return false;
+                    }
+                    alert("付款失败，请刷新重试！")
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert("服务器异常！")
+                }
+            })
         })
     })
 </script>

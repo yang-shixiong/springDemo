@@ -38,7 +38,7 @@
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">购物车</a></li>
+                <li><a href="${pageContext.request.contextPath}/car/${user.id}">购物车</a></li>
                 <li class="dropdown">
                     <img src="${pageContext.request.contextPath}/${user.avatarUrl}" alt=""
                          style="    max-width: 30px; display: inline-block;">
@@ -47,7 +47,7 @@
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="${pageContext.request.contextPath}/userinfo/${user.id}">个人信息</a></li>
-                        <li><a href="${pageContext.request.contextPath}/order/${user.id}">查看订单</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list/${user.id}">查看订单</a></li>
                         <li id="logout"><a>退出</a></li>
                     </ul>
                 </li>

@@ -18,6 +18,13 @@ public class CarDaoImpl implements ICarDao {
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Car.class), userId);
     }
 
+    // 查询单个购物车
+    @Override
+    public Car getCar(Integer id) {
+        String sql = "select * from car where id = ?";
+        return CRUDTemplate.executeQuery(sql, new BeanHandler<>(Car.class), id);
+    }
+
     // 添加至购物车
     @Override
     public boolean addCar(Car car) {
