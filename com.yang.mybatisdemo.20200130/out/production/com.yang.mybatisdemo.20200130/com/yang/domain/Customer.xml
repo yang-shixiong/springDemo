@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--查询映射关系表-->
+<mapper namespace="myCustomer">
+    <!--根据id查询-->
+    <select id="queryCustomerById" parameterType="java.lang.Integer" resultType="com.yang.domain.Customer">
+        SELECT * FROM `customer` WHERE id = #{id}
+    </select>
+    <!--查询所有-->
+    <select id="queryAllCustomer" resultType="com.yang.domain.Customer">
+        SELECT * FROM `customer`
+    </select>
+    <!--添加-->
+    <insert id="insertCustomer" parameterType="com.yang.domain.Customer">
+        /*这个网上又说是返回id，其实实测这个就是返回的影响的行数*/
+<!--        <selectKey keyColumn="id" keyProperty="id" resultType="Integer" order="AFTER">-->
+<!--            select last_insert_id()-->
+<!--        </selectKey>-->
+        insert into `customer`(username, job, phone, email) values (#{username}, #{job}, #{phone}, #{email})
+    </insert>
+    <!--更新-->
+    <update id="updateCustomer" parameterType="com.yang.domain.Customer">
+        update `customer` set username=#{username} where id=#{id}
+    </update>
+    <!--删除-->
+    <delete id="deleteCustomer" parameterType="com.yang.domain.Customer">
+        delete from `customer` where id=#{id}
+    </delete>
+
+</mapper>

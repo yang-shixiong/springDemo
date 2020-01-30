@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--这个目前还是需要的，后续spring整合之后，会使用spring的连接池-->
+    <environments default="development">
+        <environment id="development">
+            <!--声明使用JDBC的事务管理-->
+            <transactionManager type="JDBC"/>
+            <!--数据库连接吃的配置操作-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="mysql"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--指定映射文件，一般这个文件跟我们的映射类放在同一级目录下-->
+    <mappers>
+        <mapper resource="com/yang/domain/Customer.xml"/>
+    </mappers>
+</configuration>
