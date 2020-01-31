@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这个namespace必须与映射的类接口一致-->
+<mapper namespace="com.yang.mapper.OrderMapper">
+
+    <!--插入订单信息，并返回id-->
+    <insert id="insertOrder" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into `order`(name) values (#{name})
+    </insert>
+    <!--插入关系表-->
+    <insert id="insertRelation">
+        insert into `user_order`(userId, orderId) values (#{userId}, #{orderID})
+    </insert>
+
+
+    <resultMap id="ordersMap" type="Order">
+        <!--这个是指定字段， 对于主键可以使用id或者result，其他字段只能使用resule-->
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <!--这个字段对应的是用户列表。因此使用collection进行赋值，指定type是list，里面的字段是User类型，然后在里面在指定赋值字段-->
+        <collection property="users" javaType="list" ofType="User">
+            <id column="userId" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+        </collection>
+    </resultMap>
+    <!--通过连表查询查处所有数据-->
+    <select id="getAllOrder" resultMap="ordersMap">
+        select * from `order` as o
+        left join `user_order` as uo on o.id = uo.orderId
+        left join `user` as u on uo.userId = u.id
+    </select>
+
+
+    <resultMap id="orderMap" type="Order">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="users" javaType="list" ofType="Order"
+                    select="com.yang.mapper.UserMapper.getUserThoughRelation"
+                    column="id"
+        />
+
+    </resultMap>
+    <!--分布查询-->
+    <select id="getOrderById" resultMap="orderMap">
+        select * from `order` where id = #{id}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这个namespace必须与映射的类接口一致-->
+<mapper namespace="com.yang.mapper.UserMapper">
+
+    <!--因为我们之前配置了别名，所以可以直接使用User来代替com.yang.domain.User-->
+    <select id="getUserById" resultType="User">
+        select * from `user` where id = #{id}
+    </select>
+    <!--获取全部用户-->
+    <select id="getUsers" resultType="com.yang.domain.User">
+        select * from `user`;
+    </select>
+
+
+    <!--
+    useGeneratedKeys="true" keyProperty="id" keyColumn="id" 这是另一种方法获取id值
+    这个跟之前写的是一样的
+		<selectKey keyColumn="id" keyProperty="id" resultType="Integer" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+    -->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into `user` (username, password) values (#{username}, #{password});
+    </insert>
+
+    <!--parameterType这个可以不用声明-->
+    <delete id="deleteUser">
+--         delete from `user` where id=${id}
+        delete from `user` where id=#{id}
+    </delete>
+
+    <!--第一种传参方法，这个不安全，容易被sql注入-->
+    <!--==>  Preparing: select * from `user` where id=2 -->
+    <select id="getUserMapById" resultType="java.util.Map">
+       select * from `user` where id=${id}
+   </select>
+
+
+    <!--第二种查询方法，这种可以放置sql注意，可以看出这个使用占位符插入数据-->
+    <!--==>  Preparing: select * from `user` where id=? -->
+<!--    <select id="getUserMapById" resultType="java.util.Map">-->
+<!--        select * from `user` where id=#{id}   -->
+<!--    </select>-->
+
+    <!--这个就是传递多参数，必须使用我们当时定义的那个-->
+    <select id="getUserByArgs" resultType="com.yang.domain.User">
+        select * from `user` where id=#{id} and username=#{username}
+    </select>
+
+    <resultMap id="userMap" type="User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+    </resultMap>
+    <!--使用resultMap指定乐行，column代表数据库字段，property代表java类字段-->
+    <select id="getResultMapById" resultMap="userMap">
+        select * from `user` where id=#{id}
+    </select>
+    <!--根据用户订单关系表获取用户-->
+    <select id="getUserThoughRelation" resultType="com.yang.domain.User">
+        select * from `user` where id in(select userId from `user_order` where orderId = #{orderId})
+    </select>
+</mapper>
