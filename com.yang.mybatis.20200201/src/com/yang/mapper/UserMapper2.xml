@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.mapper.UserMapper2">
+    <!--
+    开启该mapper的namespace下的二级缓存，直接使用cache
+    eviction代表缓存回收策略，目前有如下策略：
+        LRU：最近最少使用，最长时间不用的对象，默认是这个
+        FIFO：先进先出，按照对象进入缓存的顺序进行移除
+        SOFT：软引用，移除基于垃圾回收状态和软引用规则的对象
+        WEAK：弱引用，移除基于垃圾收集器状态和弱引用规则的对像
+    flushInterval：刷新间隔时间，单位是毫秒，如果不配置，那么在sql执行的时候才会去刷新
+    readOnly：是否只读，意味着缓存是否可以被修改，设置为true这样可以快速读取缓存，但是不能进行修改
+    size：引用书目，一个正整数，代表缓存最多可以存储多少个对象，如设置过大，内存容易益处
+    -->
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024" />
+
+    <!--userCache是开启二级缓存的开关，默认试开启的-->
+    <select id="getUserById" resultType="com.yang.domain.User" useCache="true">
+        select * from `user` where id=#{id}
+    </select>
+
+    <insert id="insertUser">
+        insert into `user`(username, password) values (#{username}, #{password})
+    </insert>
+
+    <select id="getUsers" resultType="com.yang.domain.User">
+        select * from `user`
+    </select>
+</mapper>

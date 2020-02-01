@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+    MyBatis 的配置文件包含了会深深影响 MyBatis 行为的设置和属性信息。 配置文档的顶层结构如下
+    properties（属性）
+    settings（设置）
+    typeAliases（类型别名）
+    typeHandlers（类型处理器）
+    objectFactory（对象工厂）
+    plugins（插件）
+    environments（环境配置）
+    environment（环境变量）
+    transactionManager（事务管理器）
+    dataSource（数据源）
+    databaseIdProvider（数据库厂商标识）
+    mappers（映射器）
+    -->
+    <!--定义属性以及读取属性文件-->
+    <properties resource="db.properties" />
+    <!--这个就是初始化配置-->
+    <settings>
+        <!--配置sql打印，将sql打印到控制台-->
+        <setting name="logImpl"  value="STDOUT_LOGGING"/>
+        <!--开启驼峰命名法，默认是false，一旦开启true，那么必须符合所有的驼峰体与数据链蛇形字体的对应，否则无法进行赋值-->
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <!--延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。就是我们当时的那个collection里面，如果不进行调用user，那么就不会打印信息-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+
+        <!--当开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+
+        <!--指定哪个对象的方法触发一次延迟加载。-->
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+
+        <!--二级缓存开关 默认是true 	全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存-->
+        <setting name="cacheEnabled" value="true" />
+        <!--
+        关闭一级缓存  MyBatis 利用本地缓存机制（Local Cache）防止循环引用（circular references）和加速重复嵌套查询。
+        默认值为 SESSION，这种情况下会缓存一个会话中执行的所有查询。
+        若设置值为 STATEMENT，本地会话仅用在语句执行上，对相同 SqlSession 的不同调用将不会共享数据。这个设置值就相当于关闭了一级缓存，因为不同调用也会比共享数据
+        -->
+        <setting name="localCacheScope" value="STATEMENT" />
+
+    </settings>
+
+    <!--定义别名-->
+    <typeAliases>
+        <!--单个别名的定义-->
+<!--        <typeAlias alias="User" type="com.yang.domain.User" />-->
+        <!--批量定义别名，别名就是定义的类名-->
+        <package name="com.yang.domain" />
+    </typeAliases>
+
+    <plugins>
+        <!--引用分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor" />
+    </plugins>
+
+    <environments default="development">
+        <!--这个是开发环境配置-->
+        <environment id="development">
+            <!--使用事务-->
+            <transactionManager type="JDBC" />
+            <!--从文件加载的数据库配置-->
+            <dataSource type="POOLED">
+                <!--这是 JDBC 驱动的 Java 类的完全限定名（并不是 JDBC 驱动中可能包含的数据源类-->
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--加载映射文件-->
+    <mappers>
+        <!--这个是之前使用的定义单个文件映射-->
+<!--        <mapper resource="com/yang/domain/Customer.xml" />-->
+        <!--使用包结构定义映射文件
+        1。名称必须要跟接口名称一致
+        2。必须和mapper接口在同一个目录
+        -->
+        <package name="com.yang.mapper" />
+    </mappers>
+</configuration>

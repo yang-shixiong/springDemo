@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.mapper.UserMapper">
+
+
+    <!--    这种情况下必须传递username以及password，否则就会报错-->
+<!--    <select id="getUsers" resultType="com.yang.domain.User">-->
+<!--        select * from `user` where username=#{username} and password=#{password}-->
+<!--    </select>-->
+<!--    因此可以使用下述来进行处理-->
+<!--    if标签，如果test里面为真，那么会把if包括的sql语句块拼接到sql查询语句中-->
+<!--    where标签会自动生成跟删除where语句，并且还可以把第一个语句中and删除掉,如下面中，只会把第一条if判断为真的语句中的and删除-->
+    <select id="getUsers" resultType="com.yang.domain.User">
+        select * from `user`
+        <where>
+            <if test="username != null and username != ''">
+                and username=#{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password=#{password}
+            </if>
+        </where>
+    </select>
+
+    <!--
+    trim标签
+    prefix：设置前缀，在第一个条件之间加一个前缀，在这里面也就是加一个where
+    prefixOverrides：条件前缀覆盖，把第一个条件之前的指定字符串覆盖，也就是and
+    suffixOverrides：条件后缀覆盖，把最后一个条件之后的指定字符串覆盖，也就是and
+    -->
+    <select id="getUserList" resultType="com.yang.domain.User">
+        select * from `user`
+        <trim prefix="where" prefixOverrides="and" suffixOverrides="and">
+            <if test="username != null and username != ''">
+                and username=#{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password=#{password} and
+            </if>
+        </trim>
+    </select>
+    <!--choose标签
+    判断语句使用when，如果条件满足，就会直接执行这个sql并且后续语句不再执行
+    如果都不满足，则会执行otherwise语句，相当于java中select的default
+    -->
+    <select id="getUserChoose" resultType="com.yang.domain.User">
+        select * from `user`
+        <where>
+            <choose>
+                <when test="username != null and username != ''">
+                    username=#{username}
+                </when>
+                <when test="password != null and password != ''">
+                    password=#{password}
+                </when>
+                <otherwise>
+                    1 = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <!--使用foreach，循环,
+    open就是在前置加一个(
+    close就是在后置加一个)
+    separator就是在两个元素中间使用的分隔符
+    -->
+    <select id="getUserByIds" resultType="com.yang.domain.User">
+        select * from `user` where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="ids">
+            #{ids}
+        </foreach>
+    </select>
+
+    <!--
+    bind标签可以取出传入的值，并且进行重新赋值
+    set可以把更新语句中的最后一个，删除掉
+    -->
+    <update id="updateUser">
+        <bind name="username" value="username+'bind'" />
+        update `user`
+        <set>
+            <if test="username != null and username != ''">
+                username=#{username},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+        </set>
+         where id=#{id}
+    </update>
+
+    <!--使用include来引用我们之前定义的sql语句块，并且可以使用property进行传值-->
+    <select id="getUserById" resultType="com.yang.domain.User">
+        <include refid="selectUser">
+            <property name="lk" value="2" />
+        </include>
+        where id=#{id}
+    </select>
+    <select id="getUser" resultType="com.yang.domain.User">
+        <include refid="selectUser" />
+        where id=#{id}
+    </select>
+
+    <!--使用sql语句来进行封装相同的sql语句块，并且里面可以进行判断执行情况我们使用${}来获取传入的对象-->
+    <sql id="selectUser">
+        <choose>
+            <when test="${lk} ==2">
+                select `username` from `user`
+            </when>
+            <otherwise>
+                select * from `user`
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>
