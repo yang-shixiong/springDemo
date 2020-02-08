@@ -1,5 +1,8 @@
 package com.yang.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Employee {
@@ -9,6 +12,10 @@ public class Employee {
 
     private String password;
 
+    // 设置惊悚、格式化日期，否则前台无法转化
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    // 设置转化格式
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date hiredate;
 
     private String phone;
@@ -19,7 +26,7 @@ public class Employee {
 
     private Boolean admin;
 
-    private Integer depId;
+    private Department department;
 
     public Integer getId() {
         return id;
@@ -85,11 +92,11 @@ public class Employee {
         this.admin = admin;
     }
 
-    public Integer getDepId() {
-        return depId;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepId(Integer depId) {
-        this.depId = depId;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

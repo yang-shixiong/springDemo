@@ -1,6 +1,8 @@
 package com.yang.mapper;
 
 import com.yang.domain.Employee;
+import com.yang.domain.QueryVo;
+
 import java.util.List;
 
 public interface EmployeeMapper {
@@ -10,7 +12,9 @@ public interface EmployeeMapper {
 
     Employee selectByPrimaryKey(Integer id);
 
-    List<Employee> selectAll();
+    List<Employee> selectAll(QueryVo queryVo);
 
     int updateByPrimaryKey(Employee record);
+
+    int changeState(Integer id);
 }

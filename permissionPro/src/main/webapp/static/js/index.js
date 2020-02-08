@@ -19,7 +19,7 @@ $(function () {
                         title:node.text,  // 设置标签名称
                         // 这里使用iframe进行引入，如果使用href只会帮我们导入body中内容
                         content:"<iframe src=" + node.url +" frameborder='0' width='100%' height='100%'></iframe>",
-                        closeable:true,  // 设置是否可关闭
+                        closable:true,  // 设置是否可关闭
                     })
                 }
             }
