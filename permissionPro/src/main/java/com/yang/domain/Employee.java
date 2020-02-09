@@ -3,7 +3,9 @@ package com.yang.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Employee {
     private Integer id;
@@ -27,6 +29,8 @@ public class Employee {
     private Boolean admin;
 
     private Department department;
+
+    private List<Role> roles = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -98,5 +102,13 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

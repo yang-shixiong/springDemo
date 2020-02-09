@@ -19,7 +19,11 @@
     delete from employee
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yang.domain.Employee">
+  <!--删除员工与角色关系-->
+  <delete id="deleteRoleRel">
+    delete from `employee_role_rel` where employee_id =#{id}
+  </delete>
+  <insert id="insert" parameterType="com.yang.domain.Employee" useGeneratedKeys="true" keyProperty="id">
     insert into employee (id, username, password, 
       hiredate, phone, email, 
       state, admin, dep_id)
@@ -27,7 +31,10 @@
       #{hiredate}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{state}, #{admin,jdbcType=BIT}, #{department.id,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yang.domain.Employee">
+    <insert id="insertRoleRel">
+      insert into `employee_role_rel`(employee_id, role_id) values (#{employee_id}, #{role_id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.yang.domain.Employee">
     update employee
     set username = #{username,jdbcType=VARCHAR},
       hiredate = #{hiredate,jdbcType=TIMESTAMP},

@@ -29,7 +29,7 @@ $(function () {
                 field: 'admin', title: '管理员', width: 100, align: 'center', formatter: function (value, row, index) {
                     if (row.admin) {
                         return "是";
-                    }else {
+                    } else {
                         return "否";
                     }
                 }
@@ -46,13 +46,13 @@ $(function () {
         // 只允许选中一条数据
         singleSelect: true,
         // 工具栏
-        toolbar:"#tb",
-        onClickRow:function (rowIndex,rowData) {
+        toolbar: "#tb",
+        onClickRow: function (rowIndex, rowData) {
             /*判断当前行是否是离职状态*/
-            if(!rowData.state){
+            if (!rowData.state) {
                 /*离职,把离职按钮禁用*/
                 $("#delete").linkbutton("disable");
-            }else {
+            } else {
                 /*离职,把离职按钮启用*/
                 $("#delete").linkbutton("enable");
             }
@@ -62,40 +62,47 @@ $(function () {
 
     // 对话框
     $('#dialog').dialog({
-        width:350,
-        height:370,
+        width: 350,
+        height: 370,
         // 默认关闭状态
-        closed:true,
+        closed: true,
         // 设置按钮
-        buttons:[{
-            text:'保存',
-            handler:function () {
+        buttons: [{
+            text: '保存',
+            handler: function () {
                 // 判断当前是保存还是添加
                 let id = $("[name='id']").val();
                 let url;
-                if(id){
+                if (id) {
                     url = '/employee/update'
-                }else{
+                } else {
                     url = '/employee/add'
                 }
                 // 提交表单
-                $("#employeeForm").form("submit",{
-                    url:url,
-                    success:function (data) {
+                $("#employeeForm").form("submit", {
+                    url: url,
+                    onSubmit:function(param){
+                        /*获取选中的角色*/
+                        let roles =  $("#role").combobox("getValues");
+                        for(let i = 0; i < roles.length; i++){
+                            param["roles["+i+"].id"] = roles[i];
+                        }
+                    },
+                    success: function (data) {
                         data = $.parseJSON(data);
-                        if(data.success){
+                        if (data.success) {
                             $.messager.alert("提示", data.msg);
                             $("#dialog").dialog("close");
                             $("#dg").datagrid("reload")
-                        }else{
+                        } else {
                             $.messager.alert("警告", data.msg);
                         }
                     }
                 })
             }
-        },{
+        }, {
             text: '关闭',
-            handler:function () {
+            handler: function () {
                 $('#dialog').dialog("close");
             }
         }]
@@ -109,7 +116,7 @@ $(function () {
         // 清空对话框的数据
         $("#employeeForm").form("clear");
         // 添加密码验证
-        $("[name='password']").validatebox({required:true});
+        $("[name='password']").validatebox({required: true});
         // 打开对话框
         $("#dialog").dialog("open")
     });
@@ -118,7 +125,7 @@ $(function () {
     $("#edit").click(function () {
         // 获取当前选中的数据
         let rowData = $("#dg").datagrid("getSelected");
-        if(!rowData){
+        if (!rowData) {
             $.messager.alert("提示", "请选择一条数据进行编辑！");
             return
         }
@@ -138,17 +145,17 @@ $(function () {
 
     /*部门选择 下拉列表*/
     $("#department").combobox({
-        width:150,
-        panelHeight:'auto',
-        editable:false,
-        url:'/department/list',
-        textField:'name',
-        valueField:'id',
-        onLoadSuccess:function () { /*数据加载完毕之后回调*/
-            $("#department").each(function(i){
+        width: 150,
+        panelHeight: 'auto',
+        editable: false,
+        url: '/department/list',
+        textField: 'name',
+        valueField: 'id',
+        onLoadSuccess: function () { /*数据加载完毕之后回调*/
+            $("#department").each(function (i) {
                 let span = $(this).siblings("span")[i];
                 let targetInput = $(span).find("input:first");
-                if(targetInput){
+                if (targetInput) {
                     $(targetInput).attr("placeholder", $(this).attr("placeholder"));
                 }
             });
@@ -157,23 +164,23 @@ $(function () {
 
     /*是否为管理员选择*/
     $("#state").combobox({
-        width:150,
-        panelHeight:'auto',
-        textField:'label',
-        valueField:'value',
-        editable:false,
-        data:[{
-            label:'是',
-            value:'true'
-        },{
-            label:'否',
-            value:'false'
+        width: 150,
+        panelHeight: 'auto',
+        textField: 'label',
+        valueField: 'value',
+        editable: false,
+        data: [{
+            label: '是',
+            value: 'true'
+        }, {
+            label: '否',
+            value: 'false'
         }],
-        onLoadSuccess:function () { /*数据加载完毕之后回调*/
-            $("#state").each(function(i){
+        onLoadSuccess: function () { /*数据加载完毕之后回调*/
+            $("#state").each(function (i) {
                 let span = $(this).siblings("span")[i];
                 let targetInput = $(span).find("input:first");
-                if(targetInput){
+                if (targetInput) {
                     $(targetInput).attr("placeholder", $(this).attr("placeholder"));
                 }
             });
@@ -181,25 +188,46 @@ $(function () {
 
     });
 
+    // 选择角色下拉列表
+    $("#role").combobox({
+        width: 150,
+        panelHeight: "auto",
+        editable: false,
+        url: "/role/list/all",
+        textField: "name",
+        valueField: "id",
+        multiple: true,  // 多选
+        // 数据加载完毕之后回调
+        onLoadSuccess: function () {
+            $("#role").each(function (i) {
+                let span = $(this).siblings("span")[i];
+                let targetInput = $(span).find("input:first");
+                if (targetInput) {
+                    $(targetInput).attr("placeholder", $(this).attr("placeholder"));
+                }
+            });
+        }
+    })
+
     /*设置离职按钮点击*/
     $("#delete").click(function () {
         /*首先获取当前选中行*/
         let rowData = $("#dg").datagrid("getSelected");
-        if(!rowData){
-            $.messager.alert("提示","选择一行数据进行编辑");
+        if (!rowData) {
+            $.messager.alert("提示", "选择一行数据进行编辑");
             return;
         }
         /*提醒用户,是否做离职操作*/
-        $.messager.confirm("确认","是否做离职操作",function (res) {
-            if(res){
+        $.messager.confirm("确认", "是否做离职操作", function (res) {
+            if (res) {
                 /*做离职操作*/
-                $.get("/employee/state?id="+rowData.id,function (data) {
-                    if (data.success){
-                        $.messager.alert("温馨提示",data.msg);
+                $.get("/employee/state?id=" + rowData.id, function (data) {
+                    if (data.success) {
+                        $.messager.alert("温馨提示", data.msg);
                         /*重新加载数据表格*/
                         $("#dg").datagrid("reload");
                     } else {
-                        $.messager.alert("温馨提示",data.msg);
+                        $.messager.alert("温馨提示", data.msg);
                     }
 
                 });
@@ -210,16 +238,16 @@ $(function () {
     /*监听搜索按钮点击*/
     $("#searchbtn").click(function () {
         /*获取搜索的内容*/
-        let keyword =  $("[name='keyword']").val();
+        let keyword = $("[name='keyword']").val();
         /*重新加载列表  把参数keyword传过去*/
-        $("#dg").datagrid("load",{keyword:keyword});
+        $("#dg").datagrid("load", {keyword: keyword});
     });
 
     /*监听刷新点击*/
     $("#reload").click(function () {
         /*清空搜索内容*/
-        let keyword =  $("[name='keyword']").val('')
+        let keyword = $("[name='keyword']").val('')
         /*重新加载数据*/
-        $("#dg").datagrid("load",{});
+        $("#dg").datagrid("load", {});
     });
 });

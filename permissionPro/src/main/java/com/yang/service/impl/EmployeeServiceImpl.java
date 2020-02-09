@@ -2,10 +2,7 @@ package com.yang.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.yang.domain.AjaxRes;
-import com.yang.domain.Employee;
-import com.yang.domain.PageListRes;
-import com.yang.domain.QueryVo;
+import com.yang.domain.*;
 import com.yang.mapper.EmployeeMapper;
 import com.yang.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +36,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public AjaxRes insertEmployee(Employee employee) {
         employee.setState(true);
-        int result = employeeMapper.insert(employee);
         AjaxRes ajaxRes = new AjaxRes();
-        if(result == 1){
+        try {
+            // 保存员工
+            employeeMapper.insert(employee);
+
+            // 保存员工与角色的关系
+            for (Role role : employee.getRoles()) {
+                employeeMapper.insertRoleRel(employee.getId(), role.getId());
+            }
             ajaxRes.setSuccess(true);
             ajaxRes.setMsg("插入成功！");
-        }else{
+        } catch (Exception e) {
             ajaxRes.setMsg("插入失败，请重试！");
             ajaxRes.setSuccess(false);
         }
@@ -54,12 +57,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     /*修改员工*/
     @Override
     public AjaxRes updateEmployee(Employee employee) {
-        int result = employeeMapper.updateByPrimaryKey(employee);
         AjaxRes ajaxRes = new AjaxRes();
-        if(result == 1){
+        try {
+            // 删除员工与角色关系
+            employeeMapper.deleteRoleRel(employee.getId());
+            // 更新员工表
+            employeeMapper.updateByPrimaryKey(employee);
+            // 保存员工与角色的关系
+            for (Role role : employee.getRoles()) {
+                employeeMapper.insertRoleRel(employee.getId(), role.getId());
+            }
             ajaxRes.setSuccess(true);
             ajaxRes.setMsg("更新成功！");
-        }else{
+        } catch (Exception e) {
             ajaxRes.setMsg("更新失败，请重试！");
             ajaxRes.setSuccess(false);
         }
@@ -69,12 +79,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     /*修改员工离职状态*/
     @Override
     public AjaxRes changeState(Integer id) {
-        int result = employeeMapper.changeState(id);
         AjaxRes ajaxRes = new AjaxRes();
-        if(result == 1){
+        try {
+            employeeMapper.changeState(id);
             ajaxRes.setSuccess(true);
             ajaxRes.setMsg("离职操作成功！");
-        }else{
+        } catch (Exception e) {
             ajaxRes.setMsg("离职操作失败，请重试！");
             ajaxRes.setSuccess(false);
         }

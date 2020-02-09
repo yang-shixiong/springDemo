@@ -89,8 +89,10 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!--指定生成那个表-->
-        <table tableName="employee" />
-        <table tableName="department" />
+<!--        <table tableName="employee" />-->
+<!--        <table tableName="department" />-->
+        <table tableName="permission" />
+        <table tableName="role" />
 
 
     </context>

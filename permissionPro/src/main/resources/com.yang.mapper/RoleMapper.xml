@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.yang.domain.Role">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deletePermissionRelByRoleId">
+      delete from `role_permission_rel` where role_id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.yang.domain.Role" useGeneratedKeys="true" keyProperty="id">
+    insert into role (id, number, name)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+<!--  增加角色与权限关系表-->
+    <insert id="insertRoleAndPermissionRel">
+      insert into `role_permission_rel`(role_id, permission_id) values (#{role_id}, #{permission_id})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.yang.domain.Role">
+    update role
+    set number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, number, name
+    from role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, number, name
+    from role
+  </select>
+</mapper>
