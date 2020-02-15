@@ -65,4 +65,20 @@
       </if>
     </where>
   </select>
+  <!--根据员工姓名获取员工-->
+    <select id="getEmployeeByName" resultType="com.yang.domain.Employee">
+      select * from `employee` where username =#{username}
+    </select>
+  <!--查询该员工所拥有的角色集合-->
+    <select id="getRoleByEmployeeId" resultType="java.lang.String">
+      SELECT `role`.number FROM `employee_role_rel`
+      LEFT JOIN `role` ON `employee_role_rel`.role_id = `role`.id
+      WHERE employee_id = #{id}
+    </select>
+  <!--查询该员工所有的权限集合-->
+  <select id="getPermissionByEmployeeId" resultType="java.lang.String">
+        SELECT DISTINCT `permission`.resource from `role_permission_rel`
+        LEFT JOIN `permission` on `role_permission_rel`.permission_id = `permission`.id
+        WHERE `role_permission_rel`.role_id IN(SELECT role_id FROM `employee_role_rel` WHERE employee_id = #{id})
+  </select>
 </mapper>

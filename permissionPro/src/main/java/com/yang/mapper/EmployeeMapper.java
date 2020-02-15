@@ -24,4 +24,13 @@ public interface EmployeeMapper {
 
     /*删除员工与角色关系*/
     void deleteRoleRel(Integer id);
+
+    /*根据员工姓名获取员工*/
+    Employee getEmployeeByName(String username);
+
+    /*查询该员工所拥有的角色集合*/
+    List<String> getRoleByEmployeeId(Integer id);
+
+    /*查询该员工所有的权限集合*/
+    List<String> getPermissionByEmployeeId(Integer id);
 }

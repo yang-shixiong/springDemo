@@ -19,4 +19,13 @@ public interface EmployeeService {
 
     /*修改员工离职状态*/
     AjaxRes changeState(Integer id);
+
+    /*根据员工姓名获取员工*/
+    Employee getEmployeeByName(String username);
+
+    /*查询该员工所拥有的角色集合*/
+    List<String> getRoleByEmployeeId(Integer id);
+
+    /*查询该员工所有的权限集合*/
+    List<String> getPermissionByEmployeeId(Integer id);
 }

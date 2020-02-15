@@ -12,3 +12,5 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/plugins/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/plugins/easyui/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/base.js"></script>
+<%--引入shiro的标签--%>
+<%@ taglib uri="http://shiro.apache.org/tags" prefix="shiro" %>

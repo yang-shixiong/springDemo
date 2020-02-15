@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置realm数据源-->
+    <bean id="employeeRealm" class="com.yang.web.realm.EmployeeRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher" />
+    </bean>
+    <!--配置shiro过滤器-->
+    <bean id="formFilter" class="com.yang.web.filter.FormFilter" />
+
+    <!--配置shiro安全管理器-->
+    <bean id="securityManage" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="employeeRealm" />
+        <!--配置缓存-->
+        <property name="cacheManager" ref="ehCache" />
+    </bean>
+
+    <!--使用第三方去扫描shiro的注解-->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManage" />
+    </bean>
+
+    <!--配置shiro过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--
+            配置登陆认证的路径
+            如果没有配置该路径，对于没有认证过的请求，会跳转到login.jsp
+            如果配置了该路径：
+            如果请求是loginUrl的路径，那就会去做认证
+            其他请求，会去执行对应login的请求
+        -->
+        <property name="loginUrl" value="/login" />
+        <!--重新配置表单监听的过滤器-->
+        <property name="filters">
+            <map>
+                <entry key="authc" value-ref="formFilter" />
+            </map>
+        </property>
+        <property name="securityManager" ref="securityManage"/>
+        <!--配置shiro的过滤器pattern-->
+        <property name="filterChainDefinitions">
+            <value>
+                /static/** = anon  <!--不需要进行登陆验证-->
+                /login.jsp = anon  <!--不需要进行登陆验证-->
+                /logout = logout   <!--配置注销接口-->
+                /** = authc   <!--除了上述请求外，都需要进行登陆验证-->
+            </value>
+        </property>
+    </bean>
+
+    <!--
+        配置代理
+        true：使用cglib的方式
+        false：使用jdk接口动态代理
+    -->
+    <aop:config proxy-target-class="true" />
+    <!--凭证匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--散列算法-->
+        <property name="hashAlgorithmName" value="md5" />
+        <!--散列算法-->
+        <property name="hashIterations" value="2" />
+    </bean>
+    <!--缓存管理器-->
+    <bean id="ehCache" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml" />
+    </bean>
+</beans>

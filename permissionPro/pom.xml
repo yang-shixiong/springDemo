@@ -21,6 +21,7 @@
     <!--定义版本号   ${org.springframework.version}-->
     <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
     <org.mybatis.version>3.5.3</org.mybatis.version>
+    <org.apache.shiro.version>1.4.2</org.apache.shiro.version>
 
   </properties>
 
@@ -232,6 +233,44 @@
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper</artifactId>
       <version>4.1.4</version>
+    </dependency>
+
+    <!--第三方日志库-->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <!--Commons Collections增强了Java集合框架。 它提供了几个功能来简化收集处理。 它提供了许多新的接口，实现和实用程序-->
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.2</version>
+    </dependency>
+    <!--shiro核心-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${org.apache.shiro.version}</version>
+    </dependency>
+    <!--shiro整合web-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>${org.apache.shiro.version}</version>
+    </dependency>
+    <!--shiro应用缓存-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-ehcache</artifactId>
+      <version>${org.apache.shiro.version}</version>
+    </dependency>
+    <!--整合spring-shiro-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>${org.apache.shiro.version}</version>
     </dependency>
 
   </dependencies>

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.yang.domain.*;
 import com.yang.mapper.EmployeeMapper;
 import com.yang.service.EmployeeService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setState(true);
         AjaxRes ajaxRes = new AjaxRes();
         try {
+            // 获取密码
+            String password = employee.getPassword();
+            // 为密码加盐，散列两次
+            employee.setPassword(new Md5Hash(password, "!@#QAZwsx", 2).toString());
             // 保存员工
             employeeMapper.insert(employee);
 
@@ -89,5 +94,22 @@ public class EmployeeServiceImpl implements EmployeeService {
             ajaxRes.setSuccess(false);
         }
         return ajaxRes;
+    }
+
+    /*根据员工姓名获取员工*/
+    @Override
+    public Employee getEmployeeByName(String username) {
+        return employeeMapper.getEmployeeByName(username);
+    }
+
+    /*查询该员工所拥有的角色集合*/
+    @Override
+    public List<String> getRoleByEmployeeId(Integer id) {
+        return employeeMapper.getRoleByEmployeeId(id);
+    }
+    /*查询该员工所有的权限集合*/
+    @Override
+    public List<String> getPermissionByEmployeeId(Integer id) {
+        return employeeMapper.getPermissionByEmployeeId(id);
     }
 }
