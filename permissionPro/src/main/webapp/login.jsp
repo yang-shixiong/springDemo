@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>用户权限管理系统</title>
+    <%--导入公共包以及index的js文件--%>
+    <%@include file="/static/common/common.jsp"%>
     <link href="${pageContext.request.contextPath}/static/css/base.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/static/css/login.css" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/plugins/easyui/jquery.min.js"></script>
@@ -70,11 +72,12 @@
             $.post("/login", $('form').serialize(),function (data) {
                 // post请求需要序列化响应
                 data = $.parseJSON(data);
+                console.log(data)
                 if(data.success){
                     // 跳转到首页
                     window.location.href = "/index.jsp"
                 }else{
-                    $.messager("温馨提示", data.msg)
+                    $.messager.alert("温馨提示", data.msg)
                 }
             })
         })

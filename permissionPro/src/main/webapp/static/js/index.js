@@ -4,8 +4,8 @@ $(function () {
     });
 
     $('#tree').tree({
-        // 我们目录文件放在了一个json文件，发请求，获取
-        url:"static/tree.json",
+        // 发送请求获取文件
+        url:"menu/tree",
         lines:true,
         // 选中之后操作
         onSelect:function (node) {

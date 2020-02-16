@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.yang.domain.Menu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+
+    <!--封装父亲节点-->
+    <association property="parent" javaType="com.yang.domain.Menu" columnPrefix="m_">
+      <result property="id" column="id" />
+      <result property="text" column="text" />
+      <result property="url" column="url" />
+    </association>
+    <!--权限-->
+    <association property="permission" javaType="com.yang.domain.Permission">
+      <result property="id" column="p_id" />
+      <result property="name" column="name" />
+      <result property="resource" column="resource" />
+    </association>
+    <!--获取子菜单-->
+    <collection property="children" ofType="com.yang.domain.Menu" select="listChildren" column="id"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yang.domain.Menu">
+    insert into menu (id, text, url, parent_id)
+    values (#{id,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{parent.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yang.domain.Menu">
+    update menu
+    set text = #{text,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent_id = #{parent.id}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, text, url, parent_id
+    from menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select m1.id, m1.text, m1.url,
+    m2.id as m_id, m2.text as m_text, m2.url as m_url from `menu` as m1
+    left join `menu` as m2 on m1.parent_id = m2.id
+    order by m1.id desc
+  </select>
+  <!--获取传入节点的父节点-->
+  <select id="selectParentId" resultType="java.lang.Integer">
+    select parent_id from `menu` where id=#{id}
+  </select>
+  <select id="getTreeMenu" resultMap="BaseResultMap">
+    select m.id, m.text, m.url, m.parent_id, p.id as p_id, p.resource, p.name
+    from `menu` as m
+    left join `permission` as p
+    on m.permission_id = p.id
+    where m.parent_id is null;
+  </select>
+  <select id="listChildren" resultMap="BaseResultMap">
+    select m.id, m.text, m.url, m.parent_id, p.id as p_id, p.resource, p.name
+    from `menu` as m
+    left join `permission` as p
+    on m.permission_id = p.id
+    where m.parent_id =#{id};
+  </select>
+</mapper>

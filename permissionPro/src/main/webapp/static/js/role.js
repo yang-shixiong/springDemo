@@ -18,7 +18,7 @@ $(function () {
     // 编辑／新增的对话框
     $('#dialog').dialog({
         width: 600,
-        height: 650,
+        height: 500,
         buttons: [{
             text: "保存",
             handler: function () {
@@ -65,7 +65,7 @@ $(function () {
     $('#all_permission').datagrid({
         title: "全部权限",
         width: 250,
-        height: 400,
+        height: 300,
         fitColumns: true,
         singleSelect: true,
         url: "/permission/list",
@@ -98,7 +98,7 @@ $(function () {
     $("#select_permission").datagrid({
         title: "已选权限",
         width: 250,
-        height: 400,
+        height: 300,
         singleSelect: true,
         fitColumns: true,
         columns: [[
