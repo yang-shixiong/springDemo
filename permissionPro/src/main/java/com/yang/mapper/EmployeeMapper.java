@@ -13,7 +13,7 @@ public interface EmployeeMapper {
 
     Employee selectByPrimaryKey(Integer id);
 
-    List<Employee> selectAll(QueryVo queryVo);
+    List<Employee> selectAll();
 
     int updateByPrimaryKey(Employee record);
 
@@ -33,4 +33,7 @@ public interface EmployeeMapper {
 
     /*查询该员工所有的权限集合*/
     List<String> getPermissionByEmployeeId(Integer id);
+
+    /*通过excel插入*/
+    void insertInExcel(Employee employee);
 }

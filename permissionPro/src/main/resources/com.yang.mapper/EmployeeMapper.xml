@@ -34,7 +34,14 @@
     <insert id="insertRoleRel">
       insert into `employee_role_rel`(employee_id, role_id) values (#{employee_id}, #{role_id})
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.yang.domain.Employee">
+  <!--通过excel插入-->
+  <insert id="insertInExcel" parameterType="com.yang.domain.Employee">
+    insert into employee (username, password,
+      hiredate, phone, email,
+      state, admin)
+    values(#{username}, #{password}, #{hiredate}, #{phone}, #{email}, #{state}, #{admin})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yang.domain.Employee">
     update employee
     set username = #{username,jdbcType=VARCHAR},
       hiredate = #{hiredate,jdbcType=TIMESTAMP},

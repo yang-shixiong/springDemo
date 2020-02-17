@@ -11,7 +11,7 @@ public interface EmployeeService {
     /*获取员工列表*/
     PageListRes getList(QueryVo queryVo);
 
-    /*z增加员工*/
+    /*增加员工*/
     AjaxRes insertEmployee(Employee employee);
 
     /*修改员工*/
@@ -28,4 +28,10 @@ public interface EmployeeService {
 
     /*查询该员工所有的权限集合*/
     List<String> getPermissionByEmployeeId(Integer id);
+
+    /*获取所有的用户*/
+    List<Employee> getAll();
+
+    /*通过excel插入*/
+    void insertEmployeeInExcel(Employee employee);
 }

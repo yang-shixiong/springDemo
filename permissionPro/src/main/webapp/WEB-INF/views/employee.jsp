@@ -29,6 +29,8 @@
 
     <input type="text" name="keyword" style="width: 200px; height: 30px;padding-left: 5px;">
     <a class="easyui-linkbutton" iconCls="icon-search" id="searchbtn">查询</a>
+    <a class="easyui-linkbutton" iconCls="icon-edit" id="import">导入</a>
+    <a class="easyui-linkbutton" iconCls="icon-edit" id="export">导出</a>
 </div>
 <%--数据表格承接--%>
 <table id="dg"></table>
@@ -73,6 +75,21 @@
         </table>
     </form>
 
+</div>
+<%--设置上传界面--%>
+<div id="upload">
+    <form method="post" enctype="multipart/form-data" id="employUpload">
+        <table>
+            <tr>
+                <td>
+                    <input type="file" name="excel" style="width: 180px; margin-top: 20px; margin-left: 5px;">
+                </td>
+            </tr>
+            <tr>
+                <td><a href="javascript:void(0)" id="downloadTemp" style="font-size: 14px; margin-left: 5px;">下载模版</a></td>
+            </tr>
+        </table>
+    </form>
 </div>
 </body>
 </html>

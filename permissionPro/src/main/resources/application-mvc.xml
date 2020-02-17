@@ -2,14 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-	">
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--主要就是为了Spring MVC来用的，提供Controller请求转发，json自动转换等功能-->
     <mvc:annotation-driven />
     <!--静态资源处理-->
@@ -19,18 +18,30 @@
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
-    <!--配置拦截器,先注释，到时候写的时候在进行配置-->
-<!--    <mvc:interceptors>-->
-<!--        <mvc:interceptor>-->
-<!--            <mvc:mapping path="/*/" />-->
-<!--        </mvc:interceptor>-->
-<!--    </mvc:interceptors>-->
-<!--    &lt;!&ndash;配置文件上传解析器&ndash;&gt;-->
-<!--    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-<!--        &lt;!&ndash;设置上传最大文件大小&ndash;&gt;-->
-<!--        <property name="maxUploadSize">-->
-<!--            <value>10240000</value>-->
-<!--        </property>-->
-<!--    </bean>-->
+    <!--日志处理类-->
+    <bean id="systemAspect" class="com.yang.aspect.SystemAspect" />
+    <!--aop配置-->
+    <aop:config>
+        <!--设置切入函数-->
+        <aop:pointcut expression="execution(* com.yang.service.*.*(..))" id="servicePoint" />
+        <!--切入位置-->
+        <aop:aspect ref="systemAspect">
+            <aop:after method="writeLog" pointcut-ref="servicePoint" />
+        </aop:aspect>
+    </aop:config>
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截所有请求-->
+            <mvc:mapping path="/*" />
+            <!--拦截器位置-->
+            <bean class="com.yang.interceptor.RequestInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!--配置文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传最大文件大小-->
+        <property name="maxUploadSize" value="10240000"/>
+    </bean>
 
 </beans>

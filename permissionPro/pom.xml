@@ -273,6 +273,13 @@
       <version>${org.apache.shiro.version}</version>
     </dependency>
 
+    <!--poi依赖，操纵excel文件-->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>

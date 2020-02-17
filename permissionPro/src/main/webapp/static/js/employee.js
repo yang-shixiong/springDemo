@@ -229,11 +229,10 @@ $(function () {
                     } else {
                         $.messager.alert("温馨提示", data.msg);
                     }
-
                 });
             }
         });
-    })
+    });
 
     /*监听搜索按钮点击*/
     $("#searchbtn").click(function () {
@@ -250,4 +249,53 @@ $(function () {
         /*重新加载数据*/
         $("#dg").datagrid("load", {});
     });
+
+    /*监听下载按钮*/
+    $('#export').click(function () {
+        window.open("employee/download")
+    });
+
+    /*设置上传界面*/
+    $('#upload').dialog({
+        width:260,
+        height:180,
+        title:"导入Excel",
+        buttons:[{
+            text:"保存",
+            handler:function () {
+                // 进行上传
+                $('#employUpload').form("submit", {
+                    url:"employee/upload/file",
+                    success:function (data) {
+                        data = $.parseJSON(data);
+                        if (data.success) {
+                            $.messager.alert("提示", data.msg);
+                            // 关闭上传
+                            $('#upload').dialog("close");
+                            // 重新加载数据表格
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("温馨提示", data.msg);
+                        }
+                    }
+                })
+            },
+        },{
+            text: "关闭",
+            handler:function () {
+                $('#upload').dialog("close");
+            }
+        }],
+        closed:true,
+    });
+    /*监听上传按钮*/
+    $('#import').click(function () {
+        $('#employUpload').form("clear");
+        $('#upload').dialog("open");
+    });
+    /*监听下载模版按钮*/
+    $('#downloadTemp').click(function () {
+        window.open("employee/download/template")
+
+    })
 });

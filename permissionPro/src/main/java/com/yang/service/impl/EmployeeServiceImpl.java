@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 使用分页器
         Page<Object> page = PageHelper.startPage(queryVo.getPage(), queryVo.getRows());
         // 调用mapper查询员工
-        List<Employee> employees = employeeMapper.selectAll(queryVo);
+        List<Employee> employees = employeeMapper.selectAll();
         // 封装返回结果
         PageListRes pageListRes = new PageListRes();
         pageListRes.setTotal(page.getTotal());
@@ -111,5 +111,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<String> getPermissionByEmployeeId(Integer id) {
         return employeeMapper.getPermissionByEmployeeId(id);
+    }
+
+    /*获取所有的用户*/
+    @Override
+    public List<Employee> getAll() {
+        return employeeMapper.selectAll();
+    }
+
+    /*通过excel插入*/
+    @Override
+    public void insertEmployeeInExcel(Employee employee) {
+        employeeMapper.insertInExcel(employee);
     }
 }
