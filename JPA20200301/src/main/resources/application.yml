@@ -1,0 +1,16 @@
+
+spring:
+  datasource:
+    # mysql 8.0+ 需要使用带cj的驱动
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jpa?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: mysql
+
+  jpa:
+    hibernate:
+      # 这个就是更新表，如果字段变化就更新，没有就不更新，create 就是不管什么情况都会删除原来的表并新建
+      ddlAuto: update
+    showSql: true
+server:
+  port: 8090
