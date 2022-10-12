@@ -21,7 +21,7 @@
     <!--定义版本号   ${org.springframework.version}-->
     <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
     <org.mybatis.version>3.5.3</org.mybatis.version>
-    <org.apache.shiro.version>1.4.2</org.apache.shiro.version>
+    <org.apache.shiro.version>1.10.0</org.apache.shiro.version>
 
   </properties>
 
